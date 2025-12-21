@@ -1,6 +1,10 @@
 # TallyBridge
 
-Bridge the gap between your bank statements and Tally accounting software. Automatically convert bank statement PDFs to Tally-compatible XML format.
+> **Version 1.0.0 (Python CLI)** - Bridge the gap between your bank statements and Tally accounting software.
+
+Automatically convert bank statement PDFs to Tally-compatible XML format with this command-line tool.
+
+**📢 Coming Soon:** Web-based version with enhanced UI and additional features!
 
 ## Features
 
@@ -164,9 +168,32 @@ The generated XML follows Tally's import format:
 
 We welcome contributions!
 
+## Roadmap
+
+### Current Version (v1.0 - Python CLI)
+- ✅ SBI bank statement support
+- ✅ PDF to Tally XML conversion
+- ✅ Configurable settings
+- ✅ Command-line interface
+
+### Upcoming (v2.0 - Web Version)
+- 🔜 Web-based user interface
+- 🔜 Drag-and-drop PDF upload
+- 🔜 Real-time preview
+- 🔜 Batch processing multiple PDFs
+- 🔜 Direct Tally integration
+- 🔜 Enhanced error handling
+
+### Future Banks
+- 🔜 HDFC Bank
+- 🔜 ICICI Bank
+- 🔜 Axis Bank
+- 🔜 More banks based on community requests
+
 ## License
 
-MIT License - see LICENSE file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 ---
 
 Made with ❤️ for accountants and businesses using Tally
