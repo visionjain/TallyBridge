@@ -182,7 +182,9 @@ We welcome contributions!
 - 🔜 Axis Bank
 - 🔜 More banks based on community requests
 
-## License
+## 📝 Copyright & License
+
+**Copyright © 2025 Vision Jain. All rights reserved.**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
