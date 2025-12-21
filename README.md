@@ -176,14 +176,6 @@ We welcome contributions!
 - ✅ Configurable settings
 - ✅ Command-line interface
 
-### Upcoming (v2.0 - Web Version)
-- 🔜 Web-based user interface
-- 🔜 Drag-and-drop PDF upload
-- 🔜 Real-time preview
-- 🔜 Batch processing multiple PDFs
-- 🔜 Direct Tally integration
-- 🔜 Enhanced error handling
-
 ### Future Banks
 - 🔜 HDFC Bank
 - 🔜 ICICI Bank
