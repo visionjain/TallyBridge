@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="logo.png" alt="TallyBridge Logo" width="200"/>
+</p>
+
 # TallyBridge
 
 > **Version 1.0.0 (Python CLI)** - Bridge the gap between your bank statements and Tally accounting software.
