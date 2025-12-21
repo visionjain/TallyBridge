@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.png" alt="TallyBridge Logo" width="200"/>
+  <img src="logo.png" alt="TallyBridge Logo" width="400"/>
 </p>
 
 # TallyBridge
