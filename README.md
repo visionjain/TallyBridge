@@ -2,89 +2,77 @@
   <img src="logo.png" alt="TallyBridge Logo" width="400"/>
 </p>
 
+
 # TallyBridge
 
-> **Version 1.0.0 (Python CLI)** - Bridge the gap between your bank statements and Tally accounting software.
+> **Version 2.0.0 (Streamlit Web App)** – Convert your bank statement PDFs to Tally-compatible XML with a modern, interactive web interface.
 
-Automatically convert bank statement PDFs to Tally-compatible XML format with this command-line tool.
+---
 
-**📢 Coming Soon:** Web-based version with enhanced UI and additional features!
+## 🚀 What's New in v2.0.0
+- 🌐 **Streamlit Web UI**: Upload PDFs, preview & edit vouchers, and download XML directly from your browser
+- 📝 **Editable Table**: Review, edit, or delete extracted vouchers before generating XML
+- 📈 **Opening & Closing Balance**: Instantly see your statement's opening and closing balances
+- ⚡ **No CLI Needed**: Everything works in your browser—no command-line required
+- 🏦 **SBI Support**: SBI bank statements fully supported (more banks coming soon)
+- 🛠️ **Configurable**: Set Tally ledger names, company, currency, and transaction type in-app
+- 🧾 **Tally-Ready XML**: Download XML ready for import into Tally
+
+---
+
 
 ## Features
 
-- 🏦 **Multi-Bank Support** - Currently supports SBI, with more banks coming soon
+- 🏦 **Multi-Bank Support** - SBI supported, more banks coming soon
 - 🔄 **Automated Processing** - Extract transactions from PDFs automatically
 - 📊 **Tally-Ready XML** - Generates perfectly formatted XML for direct import
 - ⚙️ **Highly Configurable** - Customize account names, currency, and transaction types
 - 💰 **Smart Voucher Generation** - Automatically creates Receipt and Payment vouchers
 - ✅ **Double-Entry Bookkeeping** - Maintains proper accounting standards
 - 🎯 **Detailed Transaction Records** - Includes narration and bank allocation details
+- 🌐 **Web UI** - Edit, preview, and download from your browser
+
 
 ## Requirements
 
 - Python 3.8 or higher
 - pip (Python package manager)
 
-## Installation
+
+## Installation & Quick Start (Web App)
 
 1. Clone this repository:
-```bash
-git clone https://github.com/visionjain/TallyBridge.git
-cd TallyBridge
-```
-
+  ```bash
+  git clone https://github.com/visionjain/TallyBridge.git
+  cd TallyBridge
+  ```
 2. Create and activate a virtual environment (recommended):
-```bash
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-```
-
+  ```bash
+  python -m venv .venv
+  source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+  ```
 3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+  ```bash
+  pip install -r requirements.txt
+  ```
+4. Run the Streamlit app:
+  ```bash
+  streamlit run app.py
+  ```
+5. Open your browser and go to the URL shown in the terminal (usually http://localhost:8501)
 
-## Usage
 
-### Basic Conversion
+## How to Use (Web App)
+1. **Upload your SBI bank statement PDF**
+2. **Preview and edit vouchers** in the interactive table
+3. **Check opening and closing balances** above the table
+4. **Configure Tally details** (ledger names, company, etc.)
+5. **Click 'Generate XML'** and download your Tally-ready XML file
 
-```bash
-python tally_converter.py input.pdf output.xml
-```
-
-### With Custom Bank Name
-
-```bash
-python tally_converter.py input.pdf output.xml --bank-name "Your Bank Account Name"
-```
-
-### Configure Settings
-
-Edit `config.json` or use the interactive configuration tool:
-
-```bash
-python src/config_util.py
-```
 
 ## Configuration
-
-The `config.json` file contains the following settings:
-
-```json
-{
-    "bank_account_name": "Your Bank Account",
-    "suspense_account_name": "Suspense",
-    "currency": "₹",
-    "company_name": "Your Company Name",
-    "default_transaction_type": "Cheque"
-}
-```
-
-- **bank_account_name**: The name of your bank account ledger in Tally
-- **suspense_account_name**: Temporary ledger name for unallocated transactions
-- **currency**: Currency symbol for display
-- **company_name**: Your company name (for reference)
-- **default_transaction_type**: Default transaction type (Cheque, NEFT, etc.)
+- All settings (bank account name, suspense account, currency, company, transaction type) can be set in the web UI
+- Settings are saved to `config.json` for future runs
 
 ## How It Works
 
@@ -98,37 +86,29 @@ Each transaction creates:
 - BANKALLOCATIONS with transaction details
 - NARRATION with description and reference number
 
-## Project Structure
 
+## Project Structure
 ```
 TallyBridge/
+├── app.py                 # Streamlit web app (main entry)
 ├── src/
-│   ├── converter.py        # Main conversion logic
-│   ├── pdf_parser.py       # PDF extraction module
-│   ├── xml_template.py     # XML generation templates
-│   └── config_util.py      # Configuration utility
-├── tally_converter.py      # Main entry point
-├── config.json.example     # Configuration template
-├── requirements.txt        # Python dependencies
-├── LICENSE                 # MIT License
+│   ├── pdf_parser.py      # PDF extraction logic
+│   ├── xml_template.py    # XML generation templates
+│   ├── xml_from_vouchers.py # XML from table data
+│   └── converter.py       # (Legacy CLI converter)
+├── config.json            # Saved configuration
+├── requirements.txt       # Python dependencies
+├── logo.png               # App logo
 └── README.md              # This file
 ```
 
+
 ## Supported Banks
+- ✅ State Bank of India (SBI)
+- 🔜 HDFC, ICICI, Axis (coming soon)
 
-Currently supported:
-- ✅ **State Bank of India (SBI)** - Full support
-
-Coming soon:
-- 🔜 HDFC Bank
-- 🔜 ICICI Bank
-- 🔜 Axis Bank
-- 🔜 Other major banks
-
-Want to add support for your bank? Contributions are welcome!
 
 ## Output Format
-
 The generated XML follows Tally's import format:
 
 ```xml
@@ -147,6 +127,7 @@ The generated XML follows Tally's import format:
   </BODY>
 </ENVELOPE>
 ```
+
 
 ## Troubleshooting
 
@@ -168,17 +149,18 @@ The generated XML follows Tally's import format:
 - Delete `config.json` to reset to defaults
 - Run `python src/config_util.py` to reconfigure interactively
 
-## Contributing
 
+## Contributing
 We welcome contributions!
 
-## Roadmap
 
-### Current Version (v1.0 - Python CLI)
+## Roadmap
+### Current Version (v2.0 - Streamlit Web App)
 - ✅ SBI bank statement support
 - ✅ PDF to Tally XML conversion
 - ✅ Configurable settings
-- ✅ Command-line interface
+- ✅ Web-based interface
+- ✅ Table editing, opening/closing balance, download XML
 
 ### Future Banks
 - 🔜 HDFC Bank
@@ -186,11 +168,9 @@ We welcome contributions!
 - 🔜 Axis Bank
 - 🔜 More banks based on community requests
 
+
 ## 📝 Copyright & License
-
-**Copyright © 2025 Vision Jain. All rights reserved.**
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License © 2025 Vision Jain
 
 ---
 

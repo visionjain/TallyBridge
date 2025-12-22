@@ -13,6 +13,7 @@ env/
 .Python
 
 # IDE
+# Ignore documentation and test folders
 .vscode/
 .idea/
 *.swp
@@ -35,6 +36,7 @@ config.json
 
 # Private documentation
 docs/
+test/
 
 # Logs and temp files
 *.log

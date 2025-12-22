@@ -8,10 +8,10 @@ import os
 
 # Default configuration
 DEFAULT_CONFIG = {
-    "bank_account_name": "State Bank of India (CC/OD)",
-    "suspense_account_name": "Suspense",
-    "currency": "₹",
-    "company_name": "Abc Creation",
+    "bank_account_name": "My Bank Account",
+    "suspense_account_name": "My Suspense Ledger",
+    "currency": "INR",
+    "company_name": "My Company Name",
     "default_transaction_type": "Cheque"
 }
 
