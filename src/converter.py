@@ -6,8 +6,8 @@ Main application to convert SBI bank statement PDF to Tally XML format
 import sys
 import os
 import json
-from pdf_parser import PDFParser
-from xml_template import (
+from .pdf_parser import PDFParser
+from .xml_template import (
     get_xml_header, 
     get_suspense_ledger, 
     generate_voucher, 
