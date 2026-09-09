@@ -5,6 +5,7 @@ Generates Tally-compliant XML vouchers from transaction data
 
 import json
 import os
+from xml.sax.saxutils import escape as _xml_escape
 
 # Default configuration
 DEFAULT_CONFIG = {
@@ -51,9 +52,9 @@ def get_xml_header():
 def get_suspense_ledger():
     """Generate Suspense ledger master"""
     config = load_config()
-    ledger_name = config['suspense_account_name']
-    currency = config['currency']
-    company_name = config['company_name']
+    ledger_name = _xml_escape(config['suspense_account_name'])
+    currency = _xml_escape(config['currency'])
+    company_name = _xml_escape(config['company_name'])
     
     return f'''
             <TALLYMESSAGE xmlns:UDF="TallyUDF">
@@ -247,9 +248,9 @@ def generate_voucher(txn_date, voucher_type, narration, amount, instrument_numbe
     """
     
     config = load_config()
-    bank_name = config['bank_account_name']
-    suspense_name = config['suspense_account_name']
-    transaction_type = config['default_transaction_type']
+    bank_name = _xml_escape(config['bank_account_name'])
+    suspense_name = _xml_escape(config['suspense_account_name'])
+    transaction_type = _xml_escape(config['default_transaction_type'])
     
     # For Payment: Suspense is positive, Bank is negative
     # For Receipt: Suspense is negative, Bank is positive

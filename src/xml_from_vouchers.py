@@ -1,5 +1,6 @@
 import os
 import json
+from xml.sax.saxutils import escape as _xml_escape
 from src.xml_template import get_xml_header, get_suspense_ledger, generate_voucher, get_xml_footer, load_config
 
 def generate_xml_from_vouchers(vouchers, output_path=None):
@@ -25,7 +26,7 @@ def generate_xml_from_vouchers(vouchers, output_path=None):
                     except Exception:
                         pass
             voucher_type = v.get("Type") or v.get("type")
-            narration = f"{v.get('Description','')} &amp; {v.get('Ref No','')}"
+            narration = _xml_escape(f"{v.get('Description','')} & {v.get('Ref No','')}")
             amount = float(v.get("Amount") or 0)
             instrument_number = v.get("Ref No") or v.get("ref_no") or ""
         except Exception:
