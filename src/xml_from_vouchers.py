@@ -15,13 +15,15 @@ def generate_xml_from_vouchers(vouchers, output_path=None):
         # Defensive: fallback for missing/invalid fields
         try:
             txn_date = v.get("Date") or v.get("txn_date")
-            # Convert to Tally format if needed
-            if txn_date and len(txn_date) == 11:  # e.g. 1 Apr 2025
+            # Convert to Tally YYYYMMDD format if not already
+            if txn_date and len(txn_date) != 8:
                 from datetime import datetime
-                try:
-                    txn_date = datetime.strptime(txn_date, "%d %b %Y").strftime("%Y%m%d")
-                except Exception:
-                    txn_date = ""
+                for fmt in ("%d/%m/%Y", "%d %b %Y"):
+                    try:
+                        txn_date = datetime.strptime(txn_date, fmt).strftime("%Y%m%d")
+                        break
+                    except Exception:
+                        pass
             voucher_type = v.get("Type") or v.get("type")
             narration = f"{v.get('Description','')} &amp; {v.get('Ref No','')}"
             amount = float(v.get("Amount") or 0)

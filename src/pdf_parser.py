@@ -36,10 +36,14 @@ class Transaction:
     def get_tally_date(self):
         """Convert date to Tally format YYYYMMDD"""
         try:
-            # Parse date like "1 Apr 2025"
-            date_obj = datetime.strptime(self.txn_date, "%d %b %Y")
-            return date_obj.strftime("%Y%m%d")
-        except:
+            date_clean = self.txn_date.replace('\n', ' ').strip()
+            for fmt in ("%d/%m/%Y", "%d %b %Y"):
+                try:
+                    return datetime.strptime(date_clean, fmt).strftime("%Y%m%d")
+                except ValueError:
+                    pass
+            return ""
+        except Exception:
             return ""
     
     def get_narration(self):
@@ -91,11 +95,16 @@ class PDFParser:
         """Check if table header matches transaction table format"""
         if not header or len(header) < 5:
             return False
-        
-        # Look for key headers
+
         header_str = ' '.join([str(h).lower() if h else '' for h in header])
-        return ('txn date' in header_str or 'transaction date' in header_str) and \
-               ('debit' in header_str or 'credit' in header_str)
+        # Standard format with explicit column headers
+        if ('txn date' in header_str or 'transaction date' in header_str) and \
+               ('debit' in header_str or 'credit' in header_str):
+            return True
+        # SBI format: 7 columns, last header is "Balance", no explicit date column label
+        if len(header) == 7 and str(header[-1]).strip().lower() == 'balance':
+            return True
+        return False
     
     def _parse_transaction_row(self, row: List) -> Transaction:
         """Parse a single transaction row from the table"""
@@ -103,24 +112,24 @@ class PDFParser:
             # Expected format: [Txn Date, Value Date, Description, Ref No, Debit, Credit, Balance]
             if not row or len(row) < 7:
                 return None
-            
+
             txn_date = self._clean_value(row[0])
             value_date = self._clean_value(row[1])
             description = self._clean_value(row[2])
             ref_no = self._clean_value(row[3])
-            debit = self._clean_value(row[4])
-            credit = self._clean_value(row[5])
+            debit = self._clean_amount(row[4])
+            credit = self._clean_amount(row[5])
             balance = self._clean_value(row[6])
-            
+
             # Skip if no date (likely a header or empty row)
             if not txn_date or not self._is_valid_date(txn_date):
                 return None
-            
+
             # Skip if no debit or credit amount
             if not debit and not credit:
                 return None
-            
-            return Transaction(txn_date, value_date, description, ref_no, 
+
+            return Transaction(txn_date, value_date, description, ref_no,
                              debit or '', credit or '', balance)
         except Exception as e:
             print(f"Error parsing row: {e}")
@@ -131,16 +140,22 @@ class PDFParser:
         if value is None:
             return ''
         return str(value).strip()
-    
+
+    def _clean_amount(self, value) -> str:
+        """Clean amount cell — treat '-' as empty (SBI uses '-' for no transaction)"""
+        v = self._clean_value(value)
+        return '' if v == '-' else v
+
     def _is_valid_date(self, date_str: str) -> bool:
         """Check if string looks like a valid date"""
-        try:
-            # Try to parse date formats like "1 Apr 2025" or "21 Apr\n2025"
-            date_clean = date_str.replace('\n', ' ')
-            datetime.strptime(date_clean, "%d %b %Y")
-            return True
-        except:
-            return False
+        date_clean = date_str.replace('\n', ' ').strip()
+        for fmt in ("%d/%m/%Y", "%d %b %Y"):
+            try:
+                datetime.strptime(date_clean, fmt)
+                return True
+            except ValueError:
+                pass
+        return False
     
     def get_transactions(self) -> List[Transaction]:
         """Get list of parsed transactions"""
@@ -154,8 +169,15 @@ class PDFParser:
         filtered = []
         for txn in self.transactions:
             try:
-                txn_dt = datetime.strptime(txn.txn_date, "%d %b %Y")
-                if start <= txn_dt <= end:
+                date_clean = txn.txn_date.replace('\n', ' ').strip()
+                txn_dt = None
+                for fmt in ("%d/%m/%Y", "%d %b %Y"):
+                    try:
+                        txn_dt = datetime.strptime(date_clean, fmt)
+                        break
+                    except ValueError:
+                        pass
+                if txn_dt and start <= txn_dt <= end:
                     filtered.append(txn)
             except:
                 continue
